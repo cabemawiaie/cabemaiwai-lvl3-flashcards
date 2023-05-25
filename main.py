@@ -1,23 +1,35 @@
 import tkinter as tk
-from tkinter import *
-
-# main
-
-root = tk.Tk()
-root.title('Flashcard Sign Up')
-root.geometry('350x450')
-
-welcome_label = tk.Label(root, text="Welcome to My Flashcards")
-welcome_label.pack()
-
-sign_up_button = tk.Button(root, text="Sign Up", command=sign_up)
-sign_up_button.pack()
+from tkinter import ttk
 
 
-# sign up function
+class SignUpWindow(tk.Tk):
 
-def sign_up():
-    sign_up
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.config(width=350, height=450)
+        self.title("Welcome to My Flashcards")
+
+        self.sign_up_button = ttk.Button(self, text="Sign In",
+                                         command=self.open_sign_in)
+        self.sign_up_button.place(x=175, y=225)
+
+    def open_sign_in(self):
+        self.sign_in_page = SignInWindow
 
 
-root.mainloop()
+class SignInWindow(tk.Toplevel):
+
+    def _init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.config(width=350, height=450)
+        self.title("Flashcard Sign In Form")
+
+        self.home_button = ttk.Button(self, text="Home", command=self.destroy)
+        self.home_button.place(x=0, y=400)
+        self.focus()
+        self.grab_set()
+
+
+if __name__ == "__main__":
+    main = SignUpWindow()
+    main.mainloop()
