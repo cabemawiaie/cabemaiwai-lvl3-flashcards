@@ -7,21 +7,21 @@ class SignUpWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config(width=350, height=450)
-        self.title("Welcome to My Flashcards")
+        self.title("Welcome to My Flashcards / Sign up Form")
 
-        self.sign_up_button = ttk.Button(self, text="Sign In",
+        self.sign_in_button = ttk.Button(self, text="Sign In",
                                          command=self.open_sign_in)
-        self.sign_up_button.place(x=175, y=225)
+        self.sign_in_button.place(x=175, y=225)
 
     def open_sign_in(self):
-        self.sign_in_page = SignInWindow
+        self.sign_in_window = SignInWindow()
 
 
 class SignInWindow(tk.Toplevel):
 
     def _init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.config(width=350, height=450)
+        self.geometry('350x450')
         self.title("Flashcard Sign In Form")
 
         self.home_button = ttk.Button(self, text="Home", command=self.destroy)
