@@ -38,21 +38,44 @@ class SignIn(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        sign_up_label = ttk.Label(self, text="Sign In Page")
-        sign_up_label.pack(padx=10, pady=10)
+        sign_in_label = ttk.Label(self, text="Sign In Page")
+        sign_in_label.pack(padx=10, pady=10)
 
         # Buttons
-        btn_goals = tk.Button(self, text="Goals", bg='white', width=10, height=2, font=('MS Sans Serif', 8),
-                              command=lambda: controller.show_frame(SignUpForm))
-        btn_to_do = tk.Button(self, text="To Do List", bg='white', width=10, height=2, font=('MS Sans Serif', 8),
+        sign_in_btn = tk.Button(self, text="Sign Up", bg='white', width=10,
+                                height=2, font=('MS Sans Serif', 8),
+                                command=lambda: controller.show_frame(SignUpForm))
+        login_btn = tk.Button(self, text="Login", bg='white', width=10, height=2, font=('MS Sans Serif', 8),
                               command=lambda: controller.show_frame(LoginForm))
-        btn_to_do.pack(padx=5, pady=10)
-        btn_goals.pack(padx=5, pady=10)
+        sign_in_btn.pack(padx=5, pady=10)
+        login_btn.pack(padx=5, pady=10)
 
 
 class SignUpForm(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.parent = parent
+
+        sign_up_label = ttk.Label(self, text="Sign Up Form")
+        sign_up_label.pack(padx=10, pady=10)
+
+        email_label = ttk.Label(self, text='Enter Email:')
+        email_label.pack(padx=10, pady=10)
+        email_entry = tk.Entry(self)
+        email_entry.pack(padx=10, pady=10)
+
+        password_label = ttk.Label(self, text='Enter Password:')
+        password_label.pack(padx=10, pady=10)
+        password_entry = tk.Entry(self)
+        password_entry.pack(padx=10, pady=10)
+
+        confirm_label = ttk.Label(self, text='Confirm Password:')
+        confirm_label.pack(padx=10, pady=10)
+        confirm_entry = tk.Entry(self)
+        confirm_entry.pack(padx=10, pady=10)
+
+        submit_btn = tk.Button(self, text='Submit')
+        submit_btn.pack(padx=10, pady=10)
 
 
 class LoginForm(tk.Frame):
