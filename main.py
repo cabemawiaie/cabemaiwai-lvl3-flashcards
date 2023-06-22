@@ -2,34 +2,87 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class SignUpWindow(tk.Tk):
-
+class FlashcardsApp(tk.Tk):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.config(width=350, height=450)
-        self.title("Welcome to My Flashcards / Sign up Form")
+        tk.Tk.__init__(self, *args, **kwargs)
 
-        self.sign_in_button = ttk.Button(self, text="Sign In",
-                                         command=self.open_sign_in)
-        self.sign_in_button.place(x=175, y=225)
+        width = 350
+        height = 500
 
-    def open_sign_in(self):
-        self.sign_in_window = SignInWindow()
+        self.minsize(width, height)
+        self.title('Flashcards')
+
+        # creating container
+        container = tk.Frame(self, width=350, height=500)
+        container.pack(side="top", fill="both", expand=True)
+
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+        for F in (SignIn, SignUpForm, LoginForm):
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+            self.show_frame(SignIn)
+
+    #  Show window for the given page name
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
 
 
-class SignInWindow(tk.Toplevel):
+class SignIn(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.parent = parent
 
-    def _init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.geometry('350x450')
-        self.title("Flashcard Sign In Form")
+        sign_in_label = ttk.Label(self, text="Sign In Page")
+        sign_in_label.pack(padx=10, pady=10)
 
-        self.home_button = ttk.Button(self, text="Home", command=self.destroy)
-        self.home_button.place(x=0, y=400)
-        self.focus()
-        self.grab_set()
+        # Buttons
+        sign_in_btn = tk.Button(self, text="Sign Up", bg='white', width=10,
+                                height=2, font=('MS Sans Serif', 8),
+                                command=lambda: controller.show_frame(SignUpForm))
+        login_btn = tk.Button(self, text="Login", bg='white', width=10, height=2, font=('MS Sans Serif', 8),
+                              command=lambda: controller.show_frame(LoginForm))
+        sign_in_btn.pack(padx=5, pady=10)
+        login_btn.pack(padx=5, pady=10)
+
+
+class SignUpForm(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.parent = parent
+
+        sign_up_label = ttk.Label(self, text="Sign Up Form")
+        sign_up_label.pack(padx=10, pady=10)
+
+        email_label = ttk.Label(self, text='Enter Email:')
+        email_label.pack(padx=10, pady=10)
+        email_entry = tk.Entry(self)
+        email_entry.pack(padx=10, pady=10)
+
+        password_label = ttk.Label(self, text='Enter Password:')
+        password_label.pack(padx=10, pady=10)
+        password_entry = tk.Entry(self)
+        password_entry.pack(padx=10, pady=10)
+
+        confirm_label = ttk.Label(self, text='Confirm Password:')
+        confirm_label.pack(padx=10, pady=10)
+        confirm_entry = tk.Entry(self)
+        confirm_entry.pack(padx=10, pady=10)
+
+        submit_btn = tk.Button(self, text='Submit')
+        submit_btn.pack(padx=10, pady=10)
+
+
+class LoginForm(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
 
 
 if __name__ == "__main__":
-    main = SignUpWindow()
-    main.mainloop()
+    app = FlashcardsApp()
+    app.mainloop()
