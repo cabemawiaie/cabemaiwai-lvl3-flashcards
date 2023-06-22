@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 
 
@@ -21,7 +22,7 @@ class FlashcardsApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (SignIn, SignUpForm, LoginForm):
+        for F in (HomePage, Flashcards, CreateSubject):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -33,14 +34,13 @@ class FlashcardsApp(tk.Tk):
         frame.tkraise()
 
 
-class SignIn(tk.Frame):
+class HomePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        sign_in_label = ttk.Label(self, text="Sign In Page")
-        sign_in_label.pack(padx=10, pady=10)
-
+        home_label = ttk.Label(self, text="Home")
+        home_label.grid(row=0, column=0, pady=10)
         # Buttons
         sign_in_btn = tk.Button(self, text="Sign Up", bg='white', width=10,
                                 height=2, font=('MS Sans Serif', 8),
@@ -51,36 +51,63 @@ class SignIn(tk.Frame):
         login_btn.pack(padx=5, pady=10)
 
 
-class SignUpForm(tk.Frame):
+class Flashcards(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
+        # labels
         sign_up_label = ttk.Label(self, text="Sign Up Form")
         sign_up_label.pack(padx=10, pady=10)
 
         email_label = ttk.Label(self, text='Enter Email:')
         email_label.pack(padx=10, pady=10)
-        email_entry = tk.Entry(self)
-        email_entry.pack(padx=10, pady=10)
 
         password_label = ttk.Label(self, text='Enter Password:')
         password_label.pack(padx=10, pady=10)
-        password_entry = tk.Entry(self)
-        password_entry.pack(padx=10, pady=10)
 
         confirm_label = ttk.Label(self, text='Confirm Password:')
         confirm_label.pack(padx=10, pady=10)
+
+        # entry boxes
         confirm_entry = tk.Entry(self)
         confirm_entry.pack(padx=10, pady=10)
 
-        submit_btn = tk.Button(self, text='Submit')
+        email_entry = tk.Entry(self)
+        email_entry.pack(padx=10, pady=10)
+
+        password_entry = tk.Entry(self)
+        password_entry.pack(padx=10, pady=10)
+
+        submit_btn = tk.Button(self, text='Submit', width=15, command=None)
         submit_btn.pack(padx=10, pady=10)
 
+        # Functions
 
-class LoginForm(tk.Frame):
+
+class CreateSubject(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        # Labels
+        login_label = ttk.Label(self, text="Login Form")
+        login_label.grid(row=0, column=0, pady=10)
+
+        email_label = ttk.Label(self, text='Enter Email:')
+        email_label.grid(row=1, column=0, pady=10)
+
+        password_label = ttk.Label(self, text='Enter Password:')
+        password_label.grid(row=2, column=0, pady=10)
+
+        login_btn = tk.Button(self, text='login', width=15, command=None)
+        login_btn.grid(row=2, column=1, pady=10, padx=20)
+
+        # entry boxes
+        email_entry = tk.Entry(self)
+        email_entry.grid(row=0, column=1, pady=10, padx=20)
+
+        password_entry = tk.Entry(self)
+        password_entry.grid(row=1, column=1, pady=10, padx=20)
 
 
 if __name__ == "__main__":
