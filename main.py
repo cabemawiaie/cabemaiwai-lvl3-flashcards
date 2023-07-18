@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import tkk
+
 
 
 class FlashcardsApp(tk.Tk):
@@ -38,7 +38,7 @@ class SignIn(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        sign_in_label = ttk.Label(self, text="Sign In Page")
+        sign_in_label = tk.Label(self, text="Sign In Page")
         sign_in_label.pack(padx=10, pady=10)
 
         # Buttons
@@ -56,20 +56,20 @@ class SignUpForm(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        sign_up_label = ttk.Label(self, text="Sign Up Form")
+        sign_up_label = tk.Label(self, text="Sign Up Form")
         sign_up_label.pack(padx=10, pady=10)
 
-        email_label = ttk.Label(self, text='Enter Email:')
+        email_label = tk.Label(self, text='Enter Email:')
         email_label.pack(padx=10, pady=10)
         email_entry = tk.Entry(self)
         email_entry.pack(padx=10, pady=10)
 
-        password_label = ttk.Label(self, text='Enter Password:')
+        password_label = tk.Label(self, text='Enter Password:')
         password_label.pack(padx=10, pady=10)
         password_entry = tk.Entry(self)
         password_entry.pack(padx=10, pady=10)
 
-        confirm_label = ttk.Label(self, text='Confirm Password:')
+        confirm_label = tk.Label(self, text='Confirm Password:')
         confirm_label.pack(padx=10, pady=10)
         confirm_entry = tk.Entry(self)
         confirm_entry.pack(padx=10, pady=10)
