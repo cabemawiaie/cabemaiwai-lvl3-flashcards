@@ -1,9 +1,9 @@
 from tkinter import *
-import tkinter as tk
 from openpyxl import * 
+import tkinter as tk
 
-signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\Sign Up Details.xlsx')
 
+signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
 sheet = signupfile.active
 
 
@@ -37,6 +37,28 @@ class FlashcardsApp(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
+    signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+    sheet = signupfile.active
+    
+    def excel():
+            # resize the width of columns in excel spreadsheet
+            sheet.column_dimensions['A'].width = 30
+            sheet.column_dimensions['B'].width = 10
+            sheet.column_dimensions['C'].width = 10
+            sheet.column_dimensions['D'].width = 20
+            sheet.column_dimensions['E'].width = 20
+            sheet.column_dimensions['F'].width = 40
+            sheet.column_dimensions['G'].width = 50
+
+            # add headings to excel spreadsheet
+            sheet.cell(row=1, column=1).value = "Email"
+            sheet.cell(row=1, column=2).value = "Password"
+            sheet.cell(row=1, column=3).value = "Confirm Password"
+
+            signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+
+    excel()
+    
 
 class SignIn(tk.Frame):
     def __init__(self, parent, controller):
@@ -63,50 +85,6 @@ class SignUpForm(tk.Frame):
         sign_up_label = tk.Label(self, text="Sign Up Form")
         sign_up_label.pack(padx=10, pady=10)
 
-        email_label = tk.Label(self, text='Enter Email:')
-        email_label.pack(padx=10, pady=10)
-        email_field = tk.Entry(self)
-        email_field.pack(padx=10, pady=10)
-
-        password_label = tk.Label(self, text='Enter Password:')
-        password_label.pack(padx=10, pady=10)
-        password_field = tk.Entry(self)
-        password_field.pack(padx=10, pady=10)
-
-        confirm_label = tk.Label(self, text='Confirm Password:')
-        confirm_label.pack(padx=10, pady=10)
-        confirm_password_field = tk.Entry(self)
-        confirm_password_field.pack(padx=10, pady=10)
-
-         # function takes down from sign up form and writes it into the excel file
-        def insert():
-
-            # checking if entry is empty 
-            if (email_field.get() == "" and
-                password_field.get() == "" and
-                confirm_password_field.get() == ""):
-            
-                print("Please fill in all details")
-            else:
-                # assigning the max row and max column value up to which data is written in an excel sheet to variables
-                current_row = sheet.max_row
-                current_column = sheet.max.column
-
-                # get method returns user input as string which is written into excel spredsheet at a certain location
-                sheet.cell(row=current_row + 1, column=1).value = email_field.get()
-                sheet.cell(row=current_row + 1, column=2).value = password_field.get()
-                sheet.cell(row=current_row + 1, column=3).value = confirm_password_field.get()
-
-        submit_btn = tk.Button(self, text='Submit', command=insert)
-        submit_btn.pack(padx=10, pady=10)
-        # functions
-
-        def excel():
-            # add headings to excel spreadsheet
-            sheet.cell(row=1, column=1).value = "Email"
-            sheet.cell(row=1, column=2).value = "Password"
-            sheet.cell(row=1, column=3).value = "Confirm Password"
-
         def focus1(event):
             email_field.focuse_set()
 
@@ -122,20 +100,55 @@ class SignUpForm(tk.Frame):
             email_field.delete(0, END)
             password_field.delete(0, END)
             confirm_password_field.delete(0, END)
+        
+        # function takes down from sign up form and writes it into the excel file
+        def insert():
+
+            # checking if entry is empty 
+            if (email_field.get() == "" or
+                password_field.get() == "" or
+                confirm_password_field.get() == ""):
+            
+                print("Please fill in all details")
+            else:
+                # assigning the max row value up to which data is written in an excel sheet to variables
+                current_row = sheet.max_row
+
+                # get method returns user input as string which is written into excel spredsheet at a certain location
+                sheet.cell(row=current_row + 1, column=1).value = email_field.get()
+                sheet.cell(row=current_row + 1, column=2).value = password_field.get()
+                sheet.cell(row=current_row + 1, column=3).value = confirm_password_field.get()
+                
+                signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+                
+                email_field.focus_set()
+
+                clear()
+
+        email_label = tk.Label(self, text='Enter Email:')
+        email_label.pack(padx=10, pady=10)
+        email_field = tk.Entry(self)
+        email_field.pack(padx=10, pady=10)
+
+        password_label = tk.Label(self, text='Enter Password:')
+        password_label.pack(padx=10, pady=10)
+        password_field = tk.Entry(self)
+        password_field.pack(padx=10, pady=10)
+
+        confirm_label = tk.Label(self, text='Confirm Password:')
+        confirm_label.pack(padx=10, pady=10)
+        confirm_password_field = tk.Entry(self)
+        confirm_password_field.pack(padx=10, pady=10)
 
         # bind method used to call the next focus function when enter key is pressed 
         email_field.bind("<Return>", focus1)
         password_field.bind("<Return>", focus2)
         confirm_password_field.bind("<Return>", focus3)
 
+        submit_btn = tk.Button(self, text='Submit', command=insert)
+        submit_btn.pack(padx=10, pady=10)
 
-        signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\Sign Up Details.xlsx')
-        
-        email_field.focus_set()
 
-        clear()
-
-        excel()
 
         
 
