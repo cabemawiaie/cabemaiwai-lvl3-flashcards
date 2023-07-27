@@ -1,9 +1,10 @@
+import tkinter as tk
 from tkinter import *
 from openpyxl import * 
-import tkinter as tk
+from tkinter import messagebox
 
 
-signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\flashcards.xlsx')
 sheet = signupfile.active
 
 
@@ -15,7 +16,7 @@ class FlashcardsApp(tk.Tk):
         height = 500
 
         self.minsize(width, height)
-        self.title('Flashcards')
+        self.title('Flashcard Application')
 
         # creating container
         container = tk.Frame(self, width=350, height=500)
@@ -26,125 +27,104 @@ class FlashcardsApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (SignIn, SignUpForm, LoginForm):
+        for F in (Home, CreateFlashcards, FlashcardPack):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-            self.show_frame(SignIn)
+            self.show_frame(Home)
 
     #  Show window for the given page name
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
 
-    signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+    signupfile = load_workbook('C:\\Users\\cabemaiwaie\\Desktop\\flashcards.xlsx')
     sheet = signupfile.active
     
     def excel():
             # resize the width of columns in excel spreadsheet
             sheet.column_dimensions['A'].width = 30
-            sheet.column_dimensions['B'].width = 10
-            sheet.column_dimensions['C'].width = 10
-            sheet.column_dimensions['D'].width = 20
+            sheet.column_dimensions['B'].width = 20
+            sheet.column_dimensions['C'].width = 30
+            sheet.column_dimensions['D'].width = 30
             sheet.column_dimensions['E'].width = 20
             sheet.column_dimensions['F'].width = 40
             sheet.column_dimensions['G'].width = 50
 
             # add headings to excel spreadsheet
-            sheet.cell(row=1, column=1).value = "Email"
-            sheet.cell(row=1, column=2).value = "Password"
-            sheet.cell(row=1, column=3).value = "Confirm Password"
+            sheet.cell(row=1, column=1).value = "Topic"
+            sheet.cell(row=1, column=2).value = "Flashcard no."
+            sheet.cell(row=1, column=3).value = "Front side"
+            sheet.cell(row=1, column=4).value = "Back side"
 
-            signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
+            signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\flashcards.xlsx')
 
     excel()
     
 
-class SignIn(tk.Frame):
+class Home(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        sign_in_label = tk.Label(self, text="Sign In Page")
-        sign_in_label.pack(padx=10, pady=10)
+        home_label = tk.Label(self, text="Home")
+        home_label.pack(padx=10, pady=10)
 
         # Buttons
-        sign_in_btn = tk.Button(self, text="Sign Up", bg='white', width=10,
-                                height=2, font=('MS Sans Serif', 8),
-                                command=lambda: controller.show_frame(SignUpForm))
-        login_btn = tk.Button(self, text="Login", bg='white', width=10, height=2, font=('MS Sans Serif', 8),
-                              command=lambda: controller.show_frame(LoginForm))
-        sign_in_btn.pack(padx=5, pady=10)
-        login_btn.pack(padx=5, pady=10)
+        flashcard_pack_btn = tk.Button(self, text="Create Flashcard Packs", bg='white', width=20,
+                                height=10, font=('MS Sans Serif', 8),
+                                command=lambda: controller.show_frame(FlashcardPack))
+        create_flashcards_btn = tk.Button(self, text="Create Flashcards", bg='white', width=20, height=10, font=('MS Sans Serif', 8),
+                              command=lambda: controller.show_frame(CreateFlashcards))
+        flashcard_pack_btn.pack(padx=5, pady=10)
+        create_flashcards_btn.pack(padx=5, pady=10)
 
 
-class SignUpForm(tk.Frame):
+class FlashcardPack(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
-        sign_up_label = tk.Label(self, text="Sign Up Form")
-        sign_up_label.pack(padx=10, pady=10)
+        pack_label = tk.Label(self, text="Create Your Flashcard Packs")
+        pack_label.pack(padx=10, pady=10)
 
-        def focus1(event):
-            email_field.focuse_set()
+        subject_label = tk.Label(self, text='Please enter the topic you would like for your flashcard pack:')
+        subject_label.pack(padx=10, pady=10)
+        subject_field = tk.Entry(self)
+        subject_field.pack(padx=10, pady=10)
 
-        def focus2(event):
-            password_field.focus_set()
-
-        def focus3(event):
-            confirm_password_field.focus_set()
+        def focus(event):
+            subject_field.focuse_set()
 
         # function clears text entry boxes when called
         def clear():
 
-            email_field.delete(0, END)
-            password_field.delete(0, END)
-            confirm_password_field.delete(0, END)
-        
-        # function takes down from sign up form and writes it into the excel file
+            subject_field.delete(0, END)
+           
+        # function takes input from sign up form and writes it into the excel file
         def insert():
 
             # checking if entry is empty 
-            if (email_field.get() == "" or
-                password_field.get() == "" or
-                confirm_password_field.get() == ""):
-            
-                print("Please fill in all details")
+            if subject_field.get() == "":
+                 messagebox.showinfo("No Entry", "Please enter a topic")
             else:
                 # assigning the max row value up to which data is written in an excel sheet to variables
                 current_row = sheet.max_row
 
                 # get method returns user input as string which is written into excel spredsheet at a certain location
-                sheet.cell(row=current_row + 1, column=1).value = email_field.get()
-                sheet.cell(row=current_row + 1, column=2).value = password_field.get()
-                sheet.cell(row=current_row + 1, column=3).value = confirm_password_field.get()
+                sheet.cell(row=current_row + 1, column=1).value = subject_field.get()
                 
-                signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\Registration.xlsx')
                 
-                email_field.focus_set()
+                signupfile.save('C:\\Users\\cabemaiwaie\\Desktop\\flashcards.xlsx')
+                
+                subject_field.focus_set()
 
                 clear()
 
-        email_label = tk.Label(self, text='Enter Email:')
-        email_label.pack(padx=10, pady=10)
-        email_field = tk.Entry(self)
-        email_field.pack(padx=10, pady=10)
-
-        password_label = tk.Label(self, text='Enter Password:')
-        password_label.pack(padx=10, pady=10)
-        password_field = tk.Entry(self)
-        password_field.pack(padx=10, pady=10)
-
-        confirm_label = tk.Label(self, text='Confirm Password:')
-        confirm_label.pack(padx=10, pady=10)
-        confirm_password_field = tk.Entry(self)
-        confirm_password_field.pack(padx=10, pady=10)
+        
 
         # bind method used to call the next focus function when enter key is pressed 
-        email_field.bind("<Return>", focus1)
-        password_field.bind("<Return>", focus2)
-        confirm_password_field.bind("<Return>", focus3)
-
+        subject_field.bind("<Return>", focus)
+        
         submit_btn = tk.Button(self, text='Submit', command=insert)
         submit_btn.pack(padx=10, pady=10)
 
@@ -157,7 +137,7 @@ class SignUpForm(tk.Frame):
         
 
 
-class LoginForm(tk.Frame):
+class CreateFlashcards(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
