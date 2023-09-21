@@ -1,4 +1,4 @@
-import tkinter as tk
+iimport tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from tkinter.ttk import *
@@ -59,9 +59,11 @@ class Home(tk.Frame):
 
         # Button
         spanish_btn = ttk.Button(self, text="Spanish",
-                               style='TButton', image = self.span_image, compound = BOTTOM,
+                               style='TButton', image = self.span_image, 
+                               compound = BOTTOM,
                                 command=lambda: controller.show_frame(Spanish))
-        french_btn = ttk.Button(self, text='France', style='TButton', image = self.france_image, compound = BOTTOM,
+        french_btn = ttk.Button(self, text='France', style='TButton', 
+                                image = self.france_image, compound = BOTTOM,
                               command=lambda: controller.show_frame(French))
         french_btn.grid(row=1, column=2, padx=10, pady=10)
         spanish_btn.grid(row=2, column=2,padx=10, pady=10)
@@ -84,18 +86,22 @@ class French(tk.Frame):
       
         
 
-        answer_button = ttk.Button(self, text="Answer", command=self.answer, style='TButton')
+        answer_button = ttk.Button(self, text="Answer", command=self.answer, 
+                                   style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
 
-        next_button = ttk.Button(self, text="Next", command=self.next, style='TButton')
+        next_button = ttk.Button(self, text="Next", command=self.next, 
+                                 style='TButton')
         next_button.grid(row=15, column=1, padx=20)
 
-        hint_button = ttk.Button(self, text="Hint", command=self.hint, style='TButton')
+        hint_button = ttk.Button(self, text="Hint", command=self.hint,
+                                  style='TButton')
         hint_button.grid(row=15, column=2)
         
         self.style = ttk.Style(self)
         self.style.configure('TButton', font=('Helvetica', 12))
-        self.style.map('TButton', foreground=[('pressed', 'blue'), ('active', 'white')])
+        self.style.map('TButton', foreground=[('pressed', 'blue'),
+                                               ('active', 'white')])
         self.style.configure('TLabel', font=('Helvetica', 30))
         self.style.configure('Hint.TLabel', font=('Helvetica', 15))
 
@@ -130,15 +136,19 @@ class French(tk.Frame):
             self.question_label.config(text=self.words[random_word][0])   
         
     def answer(self):
-             if self.entry.get().capitalize().strip() == self.words[random_word][1]:
+             if self.entry.get().capitalize().strip() == \
+                  self.words[random_word][1]:
                 self.answer_label.config(
-                    text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}", style='TLabel')
+                    text=f"""Correct {self.words[random_word][0]} is""" 
+                    """{self.words[random_word][1]}""", style='TLabel')
              elif self.entry.get().capitalize() == "":
-                message_box.showinfo('No input entered', 'Please give an answer')
+                message_box = messagebox.showwarning('No input entered', \
+                                                       'Please give an answer')
              else:
-                self.entry.get().capitalize().strip() != self.words[random_word][1]
+                self.entry.get() != self.words[random_word][1]
                 self.answer_label.config(
-                    text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}", style='TLabel')
+                    text=f"""Incorrect! {self.words[random_word][0]} is not"""
+                    """{self.entry.get().capitalize()}", style='TLabel""")
                 message_box = messagebox.askyesno('Try again or Skip for now',
                                           f'Would you like to try again?')
                 self.entry.delete(0, 'end')
@@ -183,13 +193,16 @@ class Spanish(ttk.Frame):
         self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
 
-        answer_button = ttk.Button(self, text="Answer", command=self.answer, style='TButton')
+        answer_button = ttk.Button(self, text="Answer", command=self.answer, 
+                                   style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
 
-        next_button = ttk.Button(self, text="Next", command=self.next, style='TButton')
+        next_button = ttk.Button(self, text="Next", command=self.next,
+                                  style='TButton')
         next_button.grid(row=15, column=1, padx=20)
 
-        hint_button = ttk.Button(self, text="Hint", command=self.hint, style='TButton')
+        hint_button = ttk.Button(self, text="Hint", command=self.hint,
+                                  style='TButton')
         hint_button.grid(row=15, column=2)
 
         self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
@@ -219,18 +232,24 @@ class Spanish(ttk.Frame):
             global random_word
             random_word = randint(0, self.count-1)   
 
-            self.question_label.config(text=self.words[random_word][0], style='TLabel')   
+            self.question_label.config(text=self.words[random_word][0],
+                                        style='TLabel')   
         
     def answer(self):
-            if self.entry.get().capitalize().strip() == self.words[random_word][1]:
+            if self.entry.get().capitalize().strip() == \
+                  self.words[random_word][1]:
                 self.answer_label.config(
-                    text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}", style='TLabel')
+                    text=f"""Correct {self.words[random_word][0]} is""" 
+                    """{self.words[random_word][1]}""", style='TLabel')
             elif self.entry.get().capitalize() == "":
-                message_box.showinfo('No input entered', 'Please give an answer')
+                message_box = messagebox.showinfo('No input entered', 
+                                     'Please give an answer')
             else:
-                self.entry.get().capitalize().strip() != self.words[random_word][1]
+                self.entry.get().capitalize().strip() != \
+                    self.words[random_word][1]
                 self.answer_label.config(
-                    text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}", style='TLabel')
+                    text=f"""Incorrect! {self.words[random_word][0]} is not"""
+                      """{self.entry.get().capitalize()}""", style='TLabel')
                 message_box = messagebox.askyesno('Try again or Skip for now',
                                           f'Would you like to try again?')
                 self.entry.delete(0, 'end')
@@ -256,4 +275,3 @@ class Spanish(ttk.Frame):
 if __name__ == "__main__":
     app = FlashcardsApp()
     app.mainloop()
-
