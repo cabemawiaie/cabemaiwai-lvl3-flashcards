@@ -134,11 +134,12 @@ class French(tk.Frame):
                 self.answer_label.config(
                     text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}", style='TLabel')
              elif self.entry.get().capitalize() == "":
-                message_box.showinfo('No input entered', 'Please give an answer')
+                message_box = message_box.showwarning('No input entered', 'Please give an answer')
              else:
-                self.entry.get().capitalize().strip() != self.words[random_word][1]
+                self.entry.get() != self.words[random_word][1]
                 self.answer_label.config(
-                    text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}", style='TLabel')
+                    text=f"""Incorrect! {self.words[random_word][0]} is not"""
+                    """{self.entry.get().capitalize()}", style='TLabel""")
                 message_box = messagebox.askyesno('Try again or Skip for now',
                                           f'Would you like to try again?')
                 self.entry.delete(0, 'end')
