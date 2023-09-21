@@ -128,18 +128,29 @@ class FlashcardPack(tk.Frame):
         submit_btn = tk.Button(self, text='Submit', command=insert)
         submit_btn.pack(padx=10, pady=10)
 
-
-
-        
-
-        
-        
-        
-
-
 class CreateFlashcards(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.parent = parent
+
+        flashcard_label = tk.Label(self, text="Create Your Flashcards")
+        flashcard_label.pack(padx=10, pady=10)
+
+        # creating variable for topic column
+        topic_column = sheet['A']
+
+
+        topic1_btn = tk.Button(self, text="Create Flashcard Packs", bg='white', width=20,
+                                height=10, font=('MS Sans Serif', 8))
+        topic2_btn = tk.Button(self, text="Create Flashcards", bg='white', width=20, height=10, font=('MS Sans Serif'))
+        topic1_btn.pack(padx=5, pady=10)
+        topic2_btn.pack(padx=5, pady=10)
+
+
+        
+
+
+
 
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@ class FlashcardsApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (Home, Spanish, French):
+        for F in (Home, Spanish, French, Add):
             frame = F(container, self)
             self.frames[F] = frame
             self.configure(bg='lightcyan1')
@@ -63,8 +63,23 @@ class Home(tk.Frame):
                                 command=lambda: controller.show_frame(Spanish))
         french_btn = ttk.Button(self, text='France', style='TButton', image = self.france_image, compound = BOTTOM,
                               command=lambda: controller.show_frame(French))
+        
+        add_btn = ttk.Button(self, text='Add', style='TButton', command=lambda: controller.show_frame(French))
+        
         french_btn.grid(row=1, column=2, padx=10, pady=10)
         spanish_btn.grid(row=2, column=2,padx=10, pady=10)
+        add_btn.grid(row=3, column=2, padx=10, pady=10)
+
+class Add(tk.Frame):
+    def __init__(self, parent, controller):
+            tk.Frame.__init__(self, parent)
+            self.parent = parent
+
+            self.entry = ttk.Entry(self)
+            self.entry.grid(row=10, column=1, pady=20)
+
+       
+
        
 
 class French(tk.Frame):
@@ -81,7 +96,40 @@ class French(tk.Frame):
 
         self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
-      
+
+        self.words = [(('Au Revoir'), ('Goodbye')),
+                (('Bonne nuit'), ('Goodnight')),
+                (('Merci'), ('Thank you')),
+                (('Oui'), ("Yes")),
+                (('Non'), ('No')),
+                (('Bonjour'), ('Hello')),
+                (('Bonsoir'), ('Good evening')),
+                (('Excusez moi'), ('Excuse me'))]
+        
+        add_button = ttk.Button(self, text="Add", command=self.add_words, style='TButton')
+        add_button.grid(row=15, column=0, padx=20)
+
+
+           
+    def add_words(self):
+        messagebox.askyesno('Add words',
+                                          f'Would you like to add more words?')
+        if messagebox:
+             new = Toplevel(self)
+             new.geometry('300x300')
+             span_label = ttk.Label(new, text='span')
+             span_label.grid(row=1, column=2)
+             span_label = ttk.Label(text='eng')
+             span_label.grid(row=2, column=2)
+
+             span_entry = ttk.Entry(new)
+             span_entry.grid(row=1, column=1)
+             
+             eng_entry = ttk.Entry(new)
+             eng_entry.grid(row=2, column=1)
+             
+             
+        
         
 
         answer_button = ttk.Button(self, text="Answer", command=self.answer, style='TButton')
@@ -104,15 +152,7 @@ class French(tk.Frame):
         self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
         self.hint_label.grid(row=20, column=1, pady=20)
         
-        self.words = [(('Au Revoir'), ('Goodbye')),
-                (('Bonne nuit'), ('Goodnight')),
-                (('Merci'), ('Thank you')),
-                (('Oui'), ("Yes")),
-                (('Non'), ('No')),
-                (('Bonjour'), ('Hello')),
-                (('Bonsoir'), ('Good evening')),
-                (('Excusez moi'), ('Excuse me'))]
-        
+      
         self.count = len(self.words)
 
 
@@ -130,23 +170,18 @@ class French(tk.Frame):
             self.question_label.config(text=self.words[random_word][0])   
         
     def answer(self):
-             if self.entry.get().capitalize().strip() == self.words[random_word][1]:
+            if self.entry.get().capitalize() == self.words[random_word][1]:
                 self.answer_label.config(
-                    text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}", style='TLabel')
-             elif self.entry.get().capitalize() == "":
-                message_box.showinfo('No input entered', 'Please give an answer')
-             else:
-                self.entry.get().capitalize().strip() != self.words[random_word][1]
+                    text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}")
+            else:
                 self.answer_label.config(
-                    text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}", style='TLabel')
+                    text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}")
                 message_box = messagebox.askyesno('Try again or Skip for now',
                                           f'Would you like to try again?')
-                self.entry.delete(0, 'end')
-
                 if message_box:
                     message_box.destroy()
                 else:
-                    self.next()          
+                    self.next()      
                                        
     hinter = ""
     hint_count = 0      
@@ -154,7 +189,7 @@ class French(tk.Frame):
     def hint(self):
             global hint_count
             global hinter
-            # write something
+
             if hint_count < len(self.words[random_word][1]):
                 hinter = hinter + self.words[random_word][1][hint_count]
                 self.hint_label.config(text=hinter)
@@ -177,7 +212,7 @@ class Spanish(ttk.Frame):
         self.entry = ttk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
 
-        self.question_label = ttk.Label(self, text='', style='TLabel')
+        self.question_label = ttk.Label(self, text="", style='TLabel')
         self.question_label.grid(row=1, column=1, pady=50)
 
         self.answer_label = ttk.Label(self, text="", style='TLabel')
@@ -218,23 +253,17 @@ class Spanish(ttk.Frame):
 
             global random_word
             random_word = randint(0, self.count-1)   
-
             self.question_label.config(text=self.words[random_word][0], style='TLabel')   
         
     def answer(self):
-            if self.entry.get().capitalize().strip() == self.words[random_word][1]:
+            if self.entry.get().capitalize() == self.words[random_word][1]:
                 self.answer_label.config(
                     text=f"Correct {self.words[random_word][0]} is {self.words[random_word][1]}", style='TLabel')
-            elif self.entry.get().capitalize() == "":
-                message_box.showinfo('No input entered', 'Please give an answer')
             else:
-                self.entry.get().capitalize().strip() != self.words[random_word][1]
                 self.answer_label.config(
                     text=f"Incorrect! {self.words[random_word][0]} is not {self.entry.get().capitalize()}", style='TLabel')
                 message_box = messagebox.askyesno('Try again or Skip for now',
                                           f'Would you like to try again?')
-                self.entry.delete(0, 'end')
-
                 if message_box:
                     message_box.destroy()
                 else:
