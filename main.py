@@ -68,9 +68,9 @@ class French(tk.Frame):
         self.parent = parent
         self.style = ttk.Style(self)
 
-        self.style.configure('TButton', font=('Helvetica', 30))
+        self.style.configure('TButton', font=('Helvetica', 15))
         self.style.configure('TLabel', font=('Helvetica', 30))
-        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
+        self.style.configure('Hint.TLabel', font=('Helvetica', 30))
         self.style.map('TButton', foreground=[('pressed', 'blue'), ('active', 'black')])
 
         self.entry = ttk.Entry(self)
@@ -168,8 +168,8 @@ class Spanish(ttk.Frame):
         self.style = ttk.Style(self)
 
         self.style.configure('TButton', font=('Helvetica', 15))
-        self.style.configure('TLabel', font=('Helvetica', 15))
-        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
+        self.style.configure('TLabel', font=('Helvetica', 30))
+        self.style.configure('Hint.TLabel', font=('Helvetica', 30))
         self.style.map('TButton', foreground=[('pressed', 'red'), ('active', 'black')])
 
         self.entry = ttk.Entry(self)
