@@ -66,15 +66,26 @@ class French(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
+        self.style = ttk.Style(self)
+
+        self.style.configure('TButton', font=('Helvetica', 30))
+        self.style.configure('TLabel', font=('Helvetica', 30))
+        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
+        self.style.map('TButton', foreground=[('pressed', 'blue'), ('active', 'black')])
 
         self.entry = ttk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
+
         # Labels
-        self.question_label = ttk.Label(self, text="", style='TLabel')
+        self.question_label = ttk.Label(self, text='', style='TLabel')
         self.question_label.grid(row=1, column=1, pady=50)
 
         self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
+
+        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
+        self.hint_label.grid(row=20, column=1, pady=20)
+
         # Buttons
         answer_button = ttk.Button(self, text="Answer", command=self.answer, style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
@@ -85,14 +96,10 @@ class French(tk.Frame):
         hint_button = ttk.Button(self, text="Hint", command=self.hint, style='TButton')
         hint_button.grid(row=15, column=2)
 
-        self.style = ttk.Style(self)
-        self.style.configure('TButton', font=('Helvetica', 12))
-        self.style.map('TButton', foreground=[('pressed', 'blue'), ('active', 'white')])
-        self.style.configure('TLabel', font=('Helvetica', 30))
-        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
-
-        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
-        self.hint_label.grid(row=20, column=1, pady=20)
+        back_button = ttk.Button(self, text="Back",
+                                 command=lambda: controller.show_frame(Home),
+                                 style='TButton')
+        back_button.grid(row=20, column=0)
 
         self.words = [(('Au Revoir'), ('Goodbye')),
                       (('Bonne nuit'), ('Goodnight')),
@@ -160,19 +167,25 @@ class Spanish(ttk.Frame):
         self.parent = parent
         self.style = ttk.Style(self)
 
-        self.style.configure('TButton', font=('Helvetica', 30))
-        self.style.configure('TLabel', font=('Helvetica', 30))
+        self.style.configure('TButton', font=('Helvetica', 15))
+        self.style.configure('TLabel', font=('Helvetica', 15))
         self.style.configure('Hint.TLabel', font=('Helvetica', 15))
+        self.style.map('TButton', foreground=[('pressed', 'red'), ('active', 'black')])
 
         self.entry = ttk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
 
+        # Labels
         self.question_label = ttk.Label(self, text='', style='TLabel')
         self.question_label.grid(row=1, column=1, pady=50)
 
         self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
 
+        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
+        self.hint_label.grid(row=20, column=1, pady=20)
+
+        # Buttons
         answer_button = ttk.Button(self, text="Answer", command=self.answer, style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
 
@@ -182,8 +195,10 @@ class Spanish(ttk.Frame):
         hint_button = ttk.Button(self, text="Hint", command=self.hint, style='TButton')
         hint_button.grid(row=15, column=2)
 
-        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
-        self.hint_label.grid(row=20, column=1, pady=20)
+        back_button = ttk.Button(self, text="Back",
+                                 command=lambda: controller.show_frame(Home),
+                                 style='TButton')
+        back_button.grid(row=20, column=0)
 
         self.words = [(('Buenos dias'), ('Good morning')),
                       (('Buenas noches'), ('Good evening')),
@@ -242,7 +257,6 @@ class Spanish(ttk.Frame):
             hinter = hinter + self.words[random_word][1][hint_count]
             self.hint_label.config(text=hinter, style='Hint.TLabel')
             hint_count += 1
-
 
 if __name__ == "__main__":
     app = FlashcardsApp()
