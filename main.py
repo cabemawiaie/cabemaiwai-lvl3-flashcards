@@ -55,7 +55,7 @@ class Home(tk.Frame):
         spanish_btn = ttk.Button(self, text="Spanish",
                                  style='TButton',
                                  command=lambda: controller.show_frame(Spanish))
-        french_btn = ttk.Button(self, text='France', style='TButton',
+        french_btn = ttk.Button(self, text='French', style='TButton',
                                 command=lambda: controller.show_frame(French))
         french_btn.grid(row=1, column=2, padx=10, pady=10)
         spanish_btn.grid(row=2, column=2, padx=10, pady=10)
