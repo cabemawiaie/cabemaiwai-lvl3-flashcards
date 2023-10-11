@@ -226,14 +226,14 @@ class Spanish(ttk.Frame):
     def answer(self):
             answer = self.entry.get().capitalize().strip()
             random_word = randint(0, self.count-1) 
-            while len(answer) > 0:
+            if len(answer) > 0:
                 if answer == self.words[random_word][1]:
                     self.answer_label.config(
                         text=f"""Correct {self.words[random_word][0]} is 
                         {self.words[random_word][1]}""", 
                         font=('Helvetica', 30))
                 # Checks whether user enter an invalid answer such as numbers                    
-                elif answer.isnumeric():
+                elif answer != answer.isalpha():
                     messagebox.showinfo('Please enter a valid answer', 
                                         'Numbers are not an acceptable answer')
                 elif answer != self.words[random_word][1]:   
