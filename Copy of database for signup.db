@@ -1,0 +1,13 @@
+import sqlite3
+sqlite3.connect('signup_details')
+c = conn.cursor()
+print("Opened database successfully")
+
+c.execute('''
+        CREATE SIGN UP TABLE
+         [user_id] INTEGER PRIMARY KEY, NOT NULL,
+         EMAIL TEXT NOT NULL,
+         PASSWORD TEXT NOT NULL
+         ''')
+
+conn.commit()

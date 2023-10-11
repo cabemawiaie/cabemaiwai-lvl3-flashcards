@@ -45,26 +45,19 @@ class Home(tk.Frame):
 
         home_label = tk.Label(self, text="Home", bg='lightblue',
                                      font=('Helvetic',30, 'bold'))
-        home_label.grid(row = 0, column = 0, columnspan = 4, pady = 10)
-
-        wel_label = tk.Label(self, text="""Welome to your language flashcard"""
-                              """ application \n where you can begin to learn"""
-                               """ the basics to \n French and Spanish""",
-                            bg='lightblue',
-                            font=('Helvetic',10, 'bold'))
-        wel_label.grid(row = 8, column = 0, columnspan = 4, pady = 20)
-
+        home_label.grid(row=0, column=8, pady=10)
 
         # Button
         spanish_btn = tk.Button(self, text="Spanish", font=('Helvetica', 15), 
-                                 bg="white", borderwidth = 0,
+                                 bg="white",
                                 command=lambda: controller.show_frame(Spanish))
         french_btn = tk.Button(self, text='France', font=('Helvetica', 15), 
-                                bg="white", borderwidth=0,
+                                bg="white",
                               command=lambda: controller.show_frame(French))
-        french_btn.grid(row = 2, column = 1, columnspan = 2, padx = 10, pady = 20)
-        spanish_btn.grid(row = 1, column = 1, columnspan = 2, padx = 10, pady = 20)
-   
+        french_btn.grid(row=2, column=0)
+        french_btn.grid_rowconfigure(1, weight=1)
+        french_btn.grid_columnconfigure(1, weight=1)
+        spanish_btn.grid(row=4, column=8, pady=10)
        
 
 class French(tk.Frame):
@@ -73,34 +66,40 @@ class French(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.parent = parent
 
-        self.entry = tk.Entry(self)
+        self.entry = ttk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
 
-        self.question_label = tk.Label(self, text="", bg='lightblue')
+        self.question_label = ttk.Label(self, text="", style='TLabel')
         self.question_label.grid(row=1, column=1, pady=50)
 
-        self.answer_label = tk.Label(self, text="", bg='lightblue')
+        self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
       
-        answer_button = tk.Button(self, text="Answer", command=self.answer, 
-                                   bg='white', border=0)
+        answer_button = ttk.Button(self, text="Answer", command=self.answer, 
+                                   style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
 
-        next_button = tk.Button(self, text="Next", command=self.next, 
-                                 bg='white')
+        next_button = ttk.Button(self, text="Next", command=self.next, 
+                                 style='TButton')
         next_button.grid(row=15, column=1, padx=20)
         
-        hint_button = tk.Button(self, text="Hint", command=self.hint,
-                                   bg='white')
+        hint_button = ttk.Button(self, text="Hint", command=self.hint,
+                                  style='TButton')
         hint_button.grid(row=15, column=2)
 
-        home_button = tk.Button(self, text="Home",
+        home_button = ttk.Button(self, text="Home",
                                  command=lambda: controller.show_frame(Home),
-                                 bg='white')
+                                 style='TButton')
         home_button.grid(row=20, column=0)
 
+        
+        self.style = ttk.Style(master=self.parent)
+        self.style.configure('TButton', font=('Helvetica', 12))
+        self.style.map('TButton', bg='lightblue')
+        self.style.configure('TLabel', font=('Helvetica', 30))
+        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
     
-        self.hint_label = tk.Label(self, text="", bg='lightblue')
+        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
         self.hint_label.grid(row=20, column=1, pady=20)
         
         self.words = [(('Au Revoir'), ('Goodbye')),
@@ -114,6 +113,9 @@ class French(tk.Frame):
         
         self.count = len(self.words)
     
+    hinter = ""
+    hint_count = 0
+
     def next(self):
             self.answer_label.config(text="")
             self.entry.delete(0, 'end')
@@ -149,14 +151,13 @@ class French(tk.Frame):
                         text=f"Incorrect! {self.words[random_word][0]} is not \
                         {answer}", style='TLabel'
                     )
-    hinter = ""
-    hint_count = 0
-
+        
     def hint(self, hinter, hint_count, random_word):
             if hint_count < len(self.words[random_word][1]):
                 hinter = hinter + self.words[random_word][1][hint_count]
                 self.hint_label.config(text=hinter)
                 hint_count += 1 
+                return hint_count
     
 
         
@@ -164,34 +165,39 @@ class Spanish(ttk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
-       
-        self.entry = tk.Entry(self)
+        self.style = ttk.Style(master=self.parent)
+
+        self.style.configure('TButton', font=('Helvetica', 30))
+        self.style.configure('TLabel', font=('Helvetica', 30))
+        self.style.configure('Hint.TLabel', font=('Helvetica', 15))
+
+        self.entry = ttk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
 
-        self.question_label = tk.Label(self, text='', bg='lightblue')
+        self.question_label = ttk.Label(self, text='', style='TLabel')
         self.question_label.grid(row=1, column=1, pady=50)
 
-        self.answer_label = tk.Label(self, text="", bg='lightblue')
+        self.answer_label = ttk.Label(self, text="", style='TLabel')
         self.answer_label.grid(row=1, column=1, pady=20)
 
-        answer_button = tk.Button(self, text="Answer", command=self.answer, 
-                                   bg='white')
+        answer_button = ttk.Button(self, text="Answer", command=self.answer, 
+                                   style='TButton')
         answer_button.grid(row=15, column=0, padx=20)
 
-        next_button = tk.Button(self, text="Next", command=self.next,
-                                   bg='white')
+        next_button = ttk.Button(self, text="Next", command=self.next,
+                                  style='TButton')
         next_button.grid(row=15, column=1, padx=20)
 
-        hint_button = tk.Button(self, text="Hint", command=self.hint,
-                                  bg='white')
+        hint_button = ttk.Button(self, text="Hint", command=self.hint,
+                                  style='TButton')
         hint_button.grid(row=15, column=2)
           
-        home_button = tk.Button(self, text="Home",
+        home_button = ttk.Button(self, text="Home",
                                  command=lambda: controller.show_frame(Home),
-                                  bg='white')
+                                 style='TButton')
         home_button.grid(row=20, column=0)
 
-        self.hint_label = tk.Label(self, text="",bg='lightblue')
+        self.hint_label = ttk.Label(self, text="", style='Hint.TLabel')
         self.hint_label.grid(row=20, column=1, pady=20)
         
         self.words = [(('Buenos dias'), ('Good morning')),
@@ -205,15 +211,18 @@ class Spanish(ttk.Frame):
         
         self.count = len(self.words)
 
+    hinter = ""
+    hint_count = 0 
+
     def next(self):
-            self.answer_label.config(text="", font=('Helvetica', 30))
+            self.answer_label.config(text="", style='TLabel')
             self.entry.delete(0, 'end')
-            self.hint_label.config(text="", font=('Helvetica', 30))
+            self.hint_label.config(text="", style='TLabel')
 
             random_word = randint(0, self.count-1) 
 
             self.question_label.config(text=self.words[random_word][0],
-                                        font=('Helvetica', 30))   
+                                        style='TLabel')   
             return random_word  
                                                     
     def check(self):  
@@ -235,23 +244,20 @@ class Spanish(ttk.Frame):
                 if answer == self.words[random_word][1]:
                     self.answer_label.config(
                         text=f"""Correct {self.words[random_word][0]} is""" 
-                        """{self.words[random_word][1]}""",
-                          font=('Helvetica', 30))
-                
+                        """{self.words[random_word][1]}""", style='TLabel')
                 else:
                     answer != self.words[random_word][1]
                     self.answer_label.config(
                         text=f"Incorrect! {self.words[random_word][0]} is not \
-                        {answer}", font=('Helvetica', 30))
-                    
-    hinter = ""
-    hint_count = 0  
-
+                        {answer}", style='TLabel'
+                    )
+                                            
     def hint(self, hinter, hint_count, random_word):
             if hint_count < len(self.words[random_word][1]):
                 hinter = hinter + self.words[random_word][1][hint_count]
-                self.hint_label.config(text=hinter, font=('Helvetica', 30))
+                self.hint_label.config(text=hinter, style='Hint.TLabel')
                 hint_count += 1    
+            return hint_count
 
     
 if __name__ == "__main__":
