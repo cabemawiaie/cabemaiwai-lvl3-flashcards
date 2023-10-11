@@ -52,7 +52,7 @@ class Home(tk.Frame):
                                """ the basics to \n French and Spanish""",
                             bg='lightblue',
                             font=('Helvetic',10, 'bold'))
-        wel_label.grid(row = 8, column = 0, columnspan = 4, pady = 20)
+        wel_label.grid(row = 8, column = 0, columnspan = 4, padx=10, pady = 20)
 
 
         # Button
@@ -83,7 +83,7 @@ class French(tk.Frame):
         self.answer_label.grid(row=1, column=1, pady=20)
       
         answer_button = tk.Button(self, text="Answer", command=self.answer, 
-                                   bg='white', border=0)
+                                   bg='white', borderwidth=0)
         answer_button.grid(row=15, column=0, padx=20)
 
         next_button = tk.Button(self, text="Next", command=self.next, 
@@ -166,7 +166,11 @@ class Spanish(ttk.Frame):
         self.parent = parent
        
         self.entry = tk.Entry(self)
+        self.entry.get().capitalize().strip()
         self.entry.grid(row=10, column=1, pady=20)
+        
+              
+
 
         self.question_label = tk.Label(self, text='', bg='lightblue')
         self.question_label.grid(row=1, column=1, pady=50)
@@ -205,6 +209,8 @@ class Spanish(ttk.Frame):
         
         self.count = len(self.words)
 
+        
+        
     def next(self):
             self.answer_label.config(text="", font=('Helvetica', 30))
             self.entry.delete(0, 'end')
@@ -214,35 +220,32 @@ class Spanish(ttk.Frame):
 
             self.question_label.config(text=self.words[random_word][0],
                                         font=('Helvetica', 30))   
-            return random_word  
-                                                    
-    def check(self):  
-        answer = self.entry.get().capitalize().strip()
-        # Checks whether user enter an invalid answer such as numbers
-        if answer == int(answer):
-            messagebox.showinfo('Please enter a valid answer', 
-                                     'Numbers are not an acceptable answer')
-        else:
-            # If user does not enter input, messagebox prompts them to 
-            if answer == "":
-                messagebox.showinfo('No input entered', 
-                                        'Please give an answer')
-        return answer
-    
-    def answer(self, answer, random_word):
-            while answer > 0:
-                self.check()
+           
+
+
+    def answer(self):
+            answer = self.entry.get().capitalize().strip()
+            random_word = randint(0, self.count-1) 
+            while len(answer) > 0:
                 if answer == self.words[random_word][1]:
                     self.answer_label.config(
-                        text=f"""Correct {self.words[random_word][0]} is""" 
-                        """{self.words[random_word][1]}""",
-                          font=('Helvetica', 30))
-                
-                else:
-                    answer != self.words[random_word][1]
+                        text=f"""Correct {self.words[random_word][0]} is 
+                        {self.words[random_word][1]}""", 
+                        font=('Helvetica', 30))
+                # Checks whether user enter an invalid answer such as numbers                    
+                elif answer.isnumeric():
+                    messagebox.showinfo('Please enter a valid answer', 
+                                        'Numbers are not an acceptable answer')
+                elif answer != self.words[random_word][1]:   
                     self.answer_label.config(
                         text=f"Incorrect! {self.words[random_word][0]} is not \
                         {answer}", font=('Helvetica', 30))
+            else:
+                # If user does not enter input, messagebox prompts them to 
+                if answer == "":
+                    messagebox.showinfo('No input entered', 
+                                        'Please give an answer')
+   
                     
     hinter = ""
     hint_count = 0  
