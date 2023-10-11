@@ -75,89 +75,83 @@ class French(tk.Frame):
 
         self.entry = tk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
-
-        self.question_label = tk.Label(self, text="", bg='lightblue')
-        self.question_label.grid(row=1, column=1, pady=50)
-
+ 
+        self.question_label = tk.Label(self, text='', bg='lightblue')
         self.answer_label = tk.Label(self, text="", bg='lightblue')
+
+        self.question_label.grid(row=1, column=1, pady=50)
         self.answer_label.grid(row=1, column=1, pady=20)
-      
+
         answer_button = tk.Button(self, text="Answer", command=self.answer, 
-                                   bg='white', borderwidth=0)
-        answer_button.grid(row=15, column=0, padx=20)
-
-        next_button = tk.Button(self, text="Next", command=self.next, 
-                                 bg='white')
-        next_button.grid(row=15, column=1, padx=20)
-        
-        hint_button = tk.Button(self, text="Hint", command=self.hint,
+                                   bg='white', width=10)
+        next_button = tk.Button(self, text="Next", command=self.next,
                                    bg='white')
-        hint_button.grid(row=15, column=2)
-
+        hint_button = tk.Button(self, text="Hint", command=self.hint,
+                                  bg='white')   
         home_button = tk.Button(self, text="Home",
                                  command=lambda: controller.show_frame(Home),
-                                 bg='white')
+                                  bg='white')
+        
+        next_button.grid(row=15, column=2)
+        hint_button.grid(row=15, column=1, padx=20)
         home_button.grid(row=20, column=0)
+        answer_button.grid(row=15, column=0, padx=20)
 
-    
-        self.hint_label = tk.Label(self, text="", bg='lightblue')
+        self.hint_label = tk.Label(self, text="",bg='lightblue')
         self.hint_label.grid(row=20, column=1, pady=20)
         
-        self.words = [(('Au Revoir'), ('Goodbye')),
-                (('Bonne nuit'), ('Goodnight')),
-                (('Merci'), ('Thank you')),
-                (('Oui'), ("Yes")),
-                (('Non'), ('No')),
-                (('Bonjour'), ('Hello')),
-                (('Bonsoir'), ('Good evening')),
-                (('Excusez moi'), ('Excuse me'))]
+        self.words = [(('Buenos dias'), ('Good morning')),
+                (('Buenas noches'), ('Good evening')),
+                (('Gracias'), ('Thank you')),
+                (('De nada'), ("You're welcome")),
+                (('Adios'), ('Goodbye')),
+                (('Hola'), ('Hello')),
+                (('Que tal?'), ('How are you')),
+                (('Me llamo'), ('My name is'))]
         
         self.count = len(self.words)
     
     def next(self):
-            self.answer_label.config(text="")
+            self.answer_label.config(text="", font=('Helvetica', 30))
             self.entry.delete(0, 'end')
-            self.hint_label.config(text="")
-            random_word = randint(0, self.count-1)   
-            self.question_label.config(text=self.words[random_word][0]) 
-            return random_word  
-    
-    def check(self):  
-        answer = self.entry.get().capitalize().strip()
-        # Checks whether user enter an invalid answer such as numbers
-        if answer == int(answer):
-            messagebox.showinfo('Please enter a valid answer', 
-                                     'Numbers are not an acceptable answer')
-        else:
-            # If user does not enter input, messagebox prompts them to 
-            if answer == "":
-                messagebox.showinfo('No input entered', 
-                                        'Please give an answer')
-        return answer
-    
-    ''' Checks user input and gives feedback accordingly '''
-    def answer(self, answer, random_word):
-            while answer > 0:
-                self.check()
+            self.hint_label.config(text="", font=('Helvetica', 30))
+
+            random_word = randint(0, self.count-1) 
+
+            self.question_label.config(text=self.words[random_word][0],
+                                        font=('Helvetica', 30))   
+           
+    def answer(self):
+            answer = self.entry.get().capitalize().strip()
+            random_word = randint(0, self.count-1) 
+            if len(answer) > 0:
                 if answer == self.words[random_word][1]:
                     self.answer_label.config(
-                        text=f"""Correct {self.words[random_word][0]} is""" 
-                        """{self.words[random_word][1]}""", style='TLabel')
-                else:
-                    answer != self.words[random_word][1]
+                        text=f"""Correct {self.words[random_word][0]} is 
+                        {self.words[random_word][1]}""", 
+                        font=('Helvetica', 30))
+                # Checks whether user enter an invalid answer such as numbers                    
+                elif answer != answer.isalpha():
+                    messagebox.showinfo('Please enter a valid answer', 
+                                        'Numbers are not an acceptable answer')
+                elif answer != self.words[random_word][1]:   
                     self.answer_label.config(
                         text=f"Incorrect! {self.words[random_word][0]} is not \
-                        {answer}", style='TLabel'
-                    )
+                        {answer}", font=('Helvetica', 30))
+            else:
+                # If user does not enter input, messagebox prompts them to 
+                if answer == "":
+                    messagebox.showinfo('No input entered', 
+                                        'Please give an answer')
+                    
     hinter = ""
-    hint_count = 0
+    hint_count = 0  
 
     def hint(self, hinter, hint_count, random_word):
             if hint_count < len(self.words[random_word][1]):
                 hinter = hinter + self.words[random_word][1][hint_count]
-                self.hint_label.config(text=hinter)
-                hint_count += 1 
-    
+                self.hint_label.config(text=hinter, font=('Helvetica', 30))
+                hint_count += 1   
 
         
 class Spanish(ttk.Frame):
@@ -166,12 +160,8 @@ class Spanish(ttk.Frame):
         self.parent = parent
        
         self.entry = tk.Entry(self)
-        self.entry.get().capitalize().strip()
         self.entry.grid(row=10, column=1, pady=20)
         
-              
-
-
         self.question_label = tk.Label(self, text='', bg='lightblue')
         self.question_label.grid(row=1, column=1, pady=50)
 
@@ -209,8 +199,6 @@ class Spanish(ttk.Frame):
         
         self.count = len(self.words)
 
-        
-        
     def next(self):
             self.answer_label.config(text="", font=('Helvetica', 30))
             self.entry.delete(0, 'end')
@@ -221,8 +209,6 @@ class Spanish(ttk.Frame):
             self.question_label.config(text=self.words[random_word][0],
                                         font=('Helvetica', 30))   
            
-
-
     def answer(self):
             answer = self.entry.get().capitalize().strip()
             random_word = randint(0, self.count-1) 
@@ -245,8 +231,7 @@ class Spanish(ttk.Frame):
                 if answer == "":
                     messagebox.showinfo('No input entered', 
                                         'Please give an answer')
-   
-                    
+                 
     hinter = ""
     hint_count = 0  
 
@@ -255,8 +240,7 @@ class Spanish(ttk.Frame):
                 hinter = hinter + self.words[random_word][1][hint_count]
                 self.hint_label.config(text=hinter, font=('Helvetica', 30))
                 hint_count += 1    
-
-    
+   
 if __name__ == "__main__":
     app = FlashcardsApp()
     app.mainloop()
