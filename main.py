@@ -2,7 +2,6 @@
 # and modules which are available in
 # tkinter and ttk module
 import tkinter as tk
-import tkinter.font as font
 from random import randint
 from tkinter import messagebox
 from tkinter import ttk
@@ -76,9 +75,9 @@ class French(tk.Frame):
         self.entry = tk.Entry(self)
         self.entry.grid(row=10, column=1, pady=20)
 
-        self.question_label = tk.Label(self, text='', font=('MS Sans Serif', '30'),
+        self.question_label = tk.Label(self, text='', font=('MS Sans Serif', 30),
                                        bg='lightblue')
-        self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', '30'),
+        self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 30),
                                      bg='lightblue')
 
         self.question_label.grid(row=1, column=1, pady=50)
@@ -91,9 +90,11 @@ class French(tk.Frame):
                                 command=lambda: controller.show_frame(Home))
         skip_button = tk.Button(self, text="Skip", command=self.skip)
 
-        buttons = [answer_button, next_button, hint_button, home_button, skip_button]
+        buttons = [answer_button, next_button, hint_button, home_button,
+                   skip_button]
         for button in buttons:
-            button.config(width=10, height=2, padx=5, borderwidth=0, bg='white', font=('MS Sans Serif', 8))
+            button.config(width=10, height=2, padx=5, borderwidth=0, bg='white',
+                          font=('MS Sans Serif', 8))
 
         next_button.grid(row=15, column=2)
         hint_button.grid(row=15, column=1)
@@ -101,7 +102,8 @@ class French(tk.Frame):
         answer_button.grid(row=15, column=0)
         skip_button.grid(row=20, column=2)
 
-        self.hint_label = tk.Label(self, text="", bg='lightblue')
+        self.hint_label = tk.Label(self, text="", bg='lightblue',
+                                   font=('MS Sans Serif', 15))
         self.hint_label.grid(row=20, column=1, pady=20)
 
         self.words = [(('Au Revoir'), ('Goodbye')),
@@ -115,15 +117,18 @@ class French(tk.Frame):
 
         self.count = len(self.words)
         self.random_word = randint(0, self.count - 1)
+        self.hinter = ''
+        self.hint_count = 0
 
     def skip(self):
-        message_box = messagebox.askyesno('Remember there are hints available!',
-                                          f'Are you sure you would like to skip?')
+        message_box = messagebox.askyesno('''Remember there are
+                                           hints!''',
+                                          (f'Are you sure you \n'
+                                           'would like to skip?'))
         if message_box:
-            message_box.destroy()
-            self.entry.delete()
-        else:
             self.next()
+        else:
+            self.entry.delete(0, 'end')
 
     def next(self):
         self.answer_label.config(text="", font=('Helvetica', 30))
@@ -144,7 +149,7 @@ class French(tk.Frame):
             else:
                 self.answer()
 
-    '''Checks user input and gives answer accordingly'''
+    '''Checks user input and gives feedback accordingly'''
 
     def answer(self):
         answer = self.entry.get().capitalize().strip()
@@ -158,18 +163,18 @@ class French(tk.Frame):
                 self.answer_label.config(
                     text=f"""Incorrect! {self.words[self.random_word][0]} is
                          not {answer}""", font=('Helvetica', 30))
+                self.entry.delete(0, 'end')
         else:
             # If user does not enter input, messagebox prompts them to
             messagebox.showinfo('No input entered',
                                 'Please give an answer')
 
+
     def hint(self):
-        hinter = ""
-        hint_count = 0
-        if hint_count < len(self.words[self.random_word][1]):
-            hinter = hinter + self.words[self.random_word][1][hint_count]
-            self.hint_label.config(text=hinter, font=('Helvetica', 30))
-            hint_count += 1
+        if self.hint_count < len(self.words[self.random_word][1]):
+            self.hinter = self.hinter + self.words[self.random_word][1][self.hint_count]
+            self.hint_label.config(text=self.hinter, font=('Helvetica', 10))
+            self.hint_count += 1
 
 
 class Spanish(ttk.Frame):
@@ -217,6 +222,7 @@ class Spanish(ttk.Frame):
 
         self.count = len(self.words)
 
+
     def next(self):
         self.answer_label.config(text="", font=('Helvetica', 30))
         self.entry.delete(0, 'end')
@@ -251,9 +257,6 @@ class Spanish(ttk.Frame):
             if answer == "":
                 messagebox.showinfo('No input entered',
                                     'Please give an answer')
-
-    hinter = ""
-    hint_count = 0
 
     def hint(self, hinter, hint_count, random_word):
         if hint_count < len(self.words[random_word][1]):
