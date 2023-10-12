@@ -11,7 +11,7 @@ class FlashcardsApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        width = 500
+        width = 570
         height = 350
 
         self.minsize(width, height)
@@ -80,30 +80,34 @@ class French(tk.Frame):
                       (('Bonsoir'), ('Good evening')),
                       (('Excusez moi'), ('Excuse me'))]
 
+        self.progress_msg = ""
         self.count = len(self.words)
         self.random_word = randint(0, self.count - 1)
         self.hinter = ''
         self.hint_count = 0
 
-        self.entry = tk.Entry(self, font=('MS Sans Serif', 15))
-        self.entry.grid(row=0, column=2, pady=20, columnspan=2)
+        self.entry = tk.Entry(self, font=('MS Sans Serif', 14))
+        self.entry.grid(row=0, column=3, pady=20, columnspan=2)
 
         self.label = tk.Label(self, text='Please enter english \n'
                                          'translation here:',
                               font=('MS Sans Serif', 10, 'bold'),
                               bg='lightblue')
         self.question_label = tk.Label(self, text=self.words[self.random_word][0],
-                                       font=('MS Sans Serif', 15),
+                                       font=('MS Sans Serif', 22),
                                        bg='lightblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
                                      bg='lightblue')
+        self.progress_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
+                                       bg='lightblue')
         self.hint_label = tk.Label(self, text="", bg='lightblue',
                                    font=('MS Sans Serif', 15))
 
-        self.label.grid(row=0, column=0, pady=20)
+        self.progress_label.grid(row=4, column=4)
+        self.label.grid(row=0, column=2, pady=20)
         self.hint_label.grid(row=4, column=1, pady=10, columnspan=2)
-        self.question_label.grid(row=2, column=1, columnspan=2, pady=20)
-        self.answer_label.grid(row=2, column=3, columnspan=3, pady=20)
+        self.question_label.grid(row=2, column=2, columnspan=2, pady=20)
+        self.answer_label.grid(row=2, column=3, columnspan=2, pady=20)
 
         answer_button = tk.Button(self, text="Check \n Answer", command=self.answer)
         next_button = tk.Button(self, text="Next", command=self.next)
@@ -124,6 +128,20 @@ class French(tk.Frame):
         home_button.grid(row=8, column=0, padx=20)
         answer_button.grid(row=5, column=2, padx=5, pady=20)
         skip_button.grid(row=8, column=4, padx=5, pady=10)
+
+    def progress(self):
+        answers = 0
+        if self.answer():
+            answers += 1
+            self.progress_msg = ("Keep up the good work! \n"
+                                 f"You have got {answers} right so far")
+            self.progress_label.config(tk.Label(self, text=self.progress_msg,
+                                                bg='lightblue',
+                                                font=('MS Sans Serif', 10)))
+        else:
+            pass
+
+    '''Confirms whether user would like to skip flashcard'''
 
     def skip(self):
         message_box = messagebox.askyesno('Remember there are hints!',
@@ -149,18 +167,19 @@ class French(tk.Frame):
 
                 self.random_word = randint(0, self.count - 1)
                 self.question_label.config(text=self.words[self.random_word][0],
-                                           font=('MS Sans Serif', 15))
+                                           font=('MS Sans Serif', 22))
+                self.progress_msg = ""
         else:
             self.answer_label.config(text="", font=('MS Sans Serif', 15))
             self.entry.delete(0, 'end')
-            self.hint_label.config(text="", font=('MS Sans Serif', 20))
+            self.hint_label.config(text="", font=('MS Sans Serif', 15))
 
             self.hinter = ""
             self.hint_count = 0
 
             self.random_word = randint(0, self.count - 1)
             self.question_label.config(text=self.words[self.random_word][0],
-                                       font=('MS Sans Serif', 15))
+                                       font=('MS Sans Serif', 22))
         return self.random_word
 
     def check_no(self):
@@ -183,11 +202,13 @@ class French(tk.Frame):
                     text=f"""Correct! {self.words[self.random_word][0]} is 
                                 {self.words[self.random_word][1]}""",
                     font=('MS Sans Serif', 10))
+                return True
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
                          not {answer}""", font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
+                return False
         else:
             # If user does not enter input, messagebox prompts them to
             messagebox.showinfo('No input entered',
@@ -197,7 +218,7 @@ class French(tk.Frame):
         if self.hint_count < len(self.words[self.random_word][1]):
             self.hinter = self.hinter + self.words[self.random_word][1][self.hint_count]
             self.hint_label.config(text=f"Hint: {self.hinter}",
-                                   font=('MS Sans Serif', 10))
+                                   font=('MS Sans Serif', 15))
             self.hint_count += 1
             return self.hinter, self.hint_count
 
@@ -223,7 +244,7 @@ class Spanish(ttk.Frame):
         self.hinter = ''
         self.hint_count = 0
 
-        self.entry = tk.Entry(self, font=('MS Sans Serif', 15))
+        self.entry = tk.Entry(self, font=('MS Sans Serif', 18))
         self.entry.grid(row=0, column=2, pady=20, columnspan=2)
 
         self.label = tk.Label(self, text='Please enter english \n'
@@ -231,7 +252,7 @@ class Spanish(ttk.Frame):
                               font=('MS Sans Serif', 10, 'bold'),
                               bg='lightblue')
         self.question_label = tk.Label(self, text=self.words[self.random_word][0],
-                                       font=('MS Sans Serif', 15),
+                                       font=('MS Sans Serif', 18),
                                        bg='lightblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
                                      bg='lightblue')
@@ -312,6 +333,7 @@ class Spanish(ttk.Frame):
                 self.answer()
 
     '''Checks user input and gives feedback accordingly'''
+
     def answer(self):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
