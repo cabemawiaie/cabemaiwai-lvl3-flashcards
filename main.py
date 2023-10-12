@@ -11,8 +11,8 @@ class FlashcardsApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        width = 350
-        height = 500
+        width = 500
+        height = 350
 
         self.minsize(width, height)
         self.title('Flashcard Application')
@@ -49,8 +49,10 @@ class Home(tk.Frame):
         home_label.grid(row=0, column=0, columnspan=4, pady=10)
 
         wel_label = tk.Label(self, text="""Welcome to your language flashcard"""
-                                        """ application \n where you can begin to learn"""
-                                        """ the basics to \n French and Spanish""",
+                                        """ application, \n 
+                                        where you can learn the"""
+                                        """ the basics for both \n 
+                                        French and Spanish!""",
                              bg='lightblue',
                              font=('Helvetic', 10, 'bold'))
         wel_label.grid(row=8, column=0, columnspan=4, padx=10, pady=20)
@@ -71,19 +73,20 @@ class French(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.parent = parent
+        self.grid_propagate(False)
 
-        self.entry = tk.Entry(self)
-        self.entry.grid(row=10, column=1, pady=20)
+        self.entry = tk.Entry(self, font=('MS Sans Serif', 15))
+        self.entry.grid(row=1, column=3, pady=20, columnspan=2)
 
-        self.question_label = tk.Label(self, text='', font=('MS Sans Serif', 30),
+        self.question_label = tk.Label(self, text='', font=('MS Sans Serif', 20, 'bold'),
                                        bg='lightblue')
-        self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 30),
+        self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
                                      bg='lightblue')
 
-        self.question_label.grid(row=1, column=1, pady=50)
-        self.answer_label.grid(row=1, column=1, pady=20)
+        self.question_label.grid(row=2, column=2, columnspan=2, pady=20)
+        self.answer_label.grid(row=2, column=2, columnspan=3, pady=20)
 
-        answer_button = tk.Button(self, text="Answer", command=self.answer)
+        answer_button = tk.Button(self, text="Check \n Answer", command=self.answer)
         next_button = tk.Button(self, text="Next", command=self.next)
         hint_button = tk.Button(self, text="Hint", command=self.hint)
         home_button = tk.Button(self, text="Home",
@@ -92,15 +95,16 @@ class French(tk.Frame):
 
         buttons = [answer_button, next_button, hint_button, home_button,
                    skip_button]
+
         for button in buttons:
-            button.config(width=10, height=2, padx=5, borderwidth=0, bg='white',
+            button.config(bg='white', borderwidth=2, width=8, height=2,
                           font=('MS Sans Serif', 8))
 
-        next_button.grid(row=15, column=2)
-        hint_button.grid(row=15, column=1)
-        home_button.grid(row=20, column=0)
-        answer_button.grid(row=15, column=0)
-        skip_button.grid(row=20, column=2)
+        next_button.grid(row=5, column=4, padx=5, pady=20)
+        hint_button.grid(row=8, column=2, padx=5, pady=10)
+        home_button.grid(row=8, column=0, padx=20)
+        answer_button.grid(row=5, column=2, padx=5, pady=20)
+        skip_button.grid(row=8, column=4, padx=5, pady=10)
 
         self.hint_label = tk.Label(self, text="", bg='lightblue',
                                    font=('MS Sans Serif', 15))
@@ -131,12 +135,12 @@ class French(tk.Frame):
             self.entry.delete(0, 'end')
 
     def next(self):
-        self.answer_label.config(text="", font=('Helvetica', 30))
+        self.answer_label.config(text="", font=('MS Sans Serif', 20))
         self.entry.delete(0, 'end')
-        self.hint_label.config(text="", font=('Helvetica', 30))
+        self.hint_label.config(text="", font=('MS Sans Serif', 20))
         self.random_word = randint(0, self.count - 1)
         self.question_label.config(text=self.words[self.random_word][0],
-                                   font=('Helvetica', 30))
+                                   font=('MS Sans Serif', 20))
         return self.random_word
 
     def check_no(self):
@@ -150,30 +154,28 @@ class French(tk.Frame):
                 self.answer()
 
     '''Checks user input and gives feedback accordingly'''
-
     def answer(self):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
-            while answer == self.words[self.random_word][1]:
+            if answer == self.words[self.random_word][1]:
                 self.answer_label.config(
                     text=f"""Correct {self.words[self.random_word][0]} is 
                                 {self.words[self.random_word][1]}""",
-                    font=('Helvetica', 30))
+                    font=('MS Sans Serif', 20))
             else:
                 self.answer_label.config(
                     text=f"""Incorrect! {self.words[self.random_word][0]} is
-                         not {answer}""", font=('Helvetica', 30))
+                         not {answer}""", font=('MS Sans Serif', 20))
                 self.entry.delete(0, 'end')
         else:
             # If user does not enter input, messagebox prompts them to
             messagebox.showinfo('No input entered',
                                 'Please give an answer')
 
-
     def hint(self):
         if self.hint_count < len(self.words[self.random_word][1]):
             self.hinter = self.hinter + self.words[self.random_word][1][self.hint_count]
-            self.hint_label.config(text=self.hinter, font=('Helvetica', 10))
+            self.hint_label.config(text=self.hinter, font=('MS Sans Serif', 15))
             self.hint_count += 1
 
 
@@ -221,7 +223,6 @@ class Spanish(ttk.Frame):
                       (('Me llamo'), ('My name is'))]
 
         self.count = len(self.words)
-
 
     def next(self):
         self.answer_label.config(text="", font=('Helvetica', 30))
