@@ -80,11 +80,12 @@ class French(tk.Frame):
                       (('Bonsoir'), ('Good evening')),
                       (('Excusez moi'), ('Excuse me'))]
 
-        self.progress_msg = ""
         self.count = len(self.words)
         self.random_word = randint(0, self.count - 1)
         self.hinter = ''
         self.hint_count = 0
+        self.answer_count = 0
+        self.progress_msg = ''
 
         self.entry = tk.Entry(self, font=('MS Sans Serif', 14))
         self.entry.grid(row=0, column=3, pady=20, columnspan=2)
@@ -98,25 +99,26 @@ class French(tk.Frame):
                                        bg='lightblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
                                      bg='lightblue')
-        self.progress_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
+        self.progress_label = tk.Label(self, text=self.progress_msg,
+                                       font=('MS Sans Serif', 15),
                                        bg='lightblue')
         self.hint_label = tk.Label(self, text="", bg='lightblue',
                                    font=('MS Sans Serif', 15))
 
-        self.progress_label.grid(row=4, column=4)
+        self.progress_label.grid(row=4, column=2, columnspan=2)
         self.label.grid(row=0, column=2, pady=20)
         self.hint_label.grid(row=4, column=1, pady=10, columnspan=2)
         self.question_label.grid(row=2, column=2, columnspan=2, pady=20)
         self.answer_label.grid(row=2, column=3, columnspan=2, pady=20)
 
-        answer_button = tk.Button(self, text="Check \n Answer", command=self.answer)
+        check_button = tk.Button(self, text="Check \n Answer", command=self.check)
         next_button = tk.Button(self, text="Next", command=self.next)
         hint_button = tk.Button(self, text="Hint", command=self.hint)
         home_button = tk.Button(self, text="Home",
                                 command=lambda: controller.show_frame(Home))
         skip_button = tk.Button(self, text="Skip", command=self.skip)
 
-        buttons = [answer_button, next_button, hint_button, home_button,
+        buttons = [check_button, next_button, hint_button, home_button,
                    skip_button]
 
         for button in buttons:
@@ -126,31 +128,22 @@ class French(tk.Frame):
         next_button.grid(row=5, column=4, padx=5, pady=20)
         hint_button.grid(row=8, column=2, padx=5, pady=10)
         home_button.grid(row=8, column=0, padx=20)
-        answer_button.grid(row=5, column=2, padx=5, pady=20)
+        check_button.grid(row=5, column=2, padx=5, pady=20)
         skip_button.grid(row=8, column=4, padx=5, pady=10)
 
+    '''Shows users how many answers they have gotten correct so far'''
     def progress(self):
-        answers = 0
-        if self.answer():
-            answers += 1
-            self.progress_msg = ("Keep up the good work! \n"
-                                 f"You have got {answers} right so far")
-            self.progress_label.config(tk.Label(self, text=self.progress_msg,
-                                                bg='lightblue',
-                                                font=('MS Sans Serif', 10)))
-        else:
-            pass
+        while self.entry.get == self.entry.get().capitalize().strip():
+            self.answer_count += 1
+            self.progress_msg = (self.progress_msg +
+                                 f"You have got {self.answer_count} right so far!")
+            self.progress_label.config(text=self.progress_msg,
+                                       font=('MS Sans Serif', 10))
 
     '''Confirms whether user would like to skip flashcard'''
-
     def skip(self):
-        message_box = messagebox.askyesno('Remember there are hints!',
-                                          (f'Are you sure you \n'
-                                           'would like to move on?'))
-        if message_box:
-            self.next()
-        else:
-            self.entry.delete(0, 'end')
+        self.entry.delete(0, 'end')
+        self.next()
 
     def next(self):
         if len(self.entry.get()) == 0:
@@ -168,7 +161,6 @@ class French(tk.Frame):
                 self.random_word = randint(0, self.count - 1)
                 self.question_label.config(text=self.words[self.random_word][0],
                                            font=('MS Sans Serif', 22))
-                self.progress_msg = ""
         else:
             self.answer_label.config(text="", font=('MS Sans Serif', 15))
             self.entry.delete(0, 'end')
@@ -182,7 +174,7 @@ class French(tk.Frame):
                                        font=('MS Sans Serif', 22))
         return self.random_word
 
-    def check_no(self):
+    def check_input(self):
         word = self.entry.get()
         # Checks whether user entered an invalid answer with numbers
         for char in word:
@@ -190,23 +182,23 @@ class French(tk.Frame):
                 messagebox.showinfo('Numbers are not an acceptable answer',
                                     'Please enter a valid answer')
             else:
-                self.answer()
+                self.check()
 
     '''Checks user input and gives feedback accordingly'''
 
-    def answer(self):
+    def check(self):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
             if answer == self.words[self.random_word][1]:
                 self.answer_label.config(
-                    text=f"""Correct! {self.words[self.random_word][0]} is 
-                                {self.words[self.random_word][1]}""",
+                    text=f"""Correct! {self.words[self.random_word][0]} is
+                    {self.words[self.random_word][1]}""",
                     font=('MS Sans Serif', 10))
                 return True
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
-                         not {answer}""", font=('MS Sans Serif', 10))
+                                not {answer}""", font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
                 return False
         else:
