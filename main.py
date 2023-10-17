@@ -54,11 +54,11 @@ class Home(tk.Frame):
         wel_label.grid(row=8, column=0, columnspan=4, padx=10, pady=20)
 
         # Button
-        spanish_btn = tk.Button(self, text="Spanish", font=('MS Sans Serif', 15),
-                                bg="white", borderwidth=0,
+        spanish_btn = tk.Button(self, text="Spanish", font=('Helvetica', 15),
+                                bg="white",
                                 command=lambda: controller.show_frame(Spanish))
-        french_btn = tk.Button(self, text='French', font=('MS Sans Serif', 15),
-                               bg="white", borderwidth=0,
+        french_btn = tk.Button(self, text='French', font=('Helvetica', 15),
+                               bg="white",
                                command=lambda: controller.show_frame(French))
         french_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=20)
         spanish_btn.grid(row=1, column=1, columnspan=2, padx=10, pady=20)
@@ -159,33 +159,33 @@ class French(tk.Frame):
             self.random_word = randint(0, self.count - 1)
             self.question_label.config(text=self.words[self.random_word][0],
                                        font=('MS Sans Serif', 22))
-        return self.random_word
+            return self.random_word
 
     '''Checks whether user entered an invalid answer with numbers'''
     def check_no(self):
         word = self.entry.get()
+        # Checks whether user entered an invalid answer with numbers
         for char in word:
             if char.isdigit():
-                messagebox.showinfo('Numbers are not an acceptable answer',
+                messagebox.showinfo('Numbers are not a valid answer',
                                     'Please enter a valid answer')
-            else:
-                self.check_input()
 
     '''Checks user input and gives feedback accordingly'''
     def check_input(self):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
+            self.check_no()
+            # If translation is correct,answer count goes up and a positive message is shown
             if answer == self.words[self.random_word][1]:
-                # If translation is correct,answer count goes up and a positive message is shown
                 self.answer_count += 1
                 pos_msg = f"""Good job! {self.words[self.random_word][0]} is 
-                {self.words[self.random_word][1]}, \n You have got {self.answer_count} 
-                answer(s) correct!"""
+                        {self.words[self.random_word][1]}, \n You have got {self.answer_count} 
+                        answer(s) correct!"""
                 self.answer_label.config(text=pos_msg, font=('MS Sans Serif', 10))
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
-                                not {answer}""", font=('MS Sans Serif', 10))
+                                        not {answer}""", font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
         else:
             # If user does not enter input, messagebox prompts them to
@@ -205,7 +205,6 @@ class French(tk.Frame):
 class Spanish(ttk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        super().__init__()
         self.parent = parent
 
         self.grid_propagate(False)
@@ -231,13 +230,13 @@ class Spanish(ttk.Frame):
         self.label = tk.Label(self, text='Please enter english \n'
                                          'translation here:',
                               font=('MS Sans Serif', 10, 'bold'),
-                              bg='lightblue')
+                              bg='skyblue')
         self.question_label = tk.Label(self, text=self.words[self.random_word][0],
                                        font=('MS Sans Serif', 22),
-                                       bg='lightblue')
+                                       bg='skyblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
-                                     bg='lightblue')
-        self.hint_label = tk.Label(self, text="", bg='lightblue',
+                                     bg='skyblue')
+        self.hint_label = tk.Label(self, text="", bg='skyblue',
                                    font=('MS Sans Serif', 15))
 
         self.label.grid(row=0, column=2, pady=20)
@@ -308,15 +307,14 @@ class Spanish(ttk.Frame):
         # Checks whether user entered an invalid answer with numbers
         for char in word:
             if char.isdigit():
-                messagebox.showinfo('Numbers are not an acceptable answer',
+                messagebox.showinfo('Numbers are not a valid answer',
                                     'Please enter a valid answer')
-            else:
-                self.check_input()
 
     '''Checks user input and gives feedback accordingly'''
     def check_input(self):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
+            self.check_no()
             # If translation is correct,answer count goes up and a positive message is shown
             if answer == self.words[self.random_word][1]:
                 self.answer_count += 1
