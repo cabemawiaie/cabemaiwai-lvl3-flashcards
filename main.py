@@ -11,8 +11,8 @@ class FlashcardsApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        width = 570
-        height = 350
+        width = 580
+        height = 375
 
         self.minsize(width, height)
         self.title('Flashcard Application')
@@ -45,19 +45,19 @@ class Home(tk.Frame):
         self.parent = parent
 
         home_label = tk.Label(self, text="Home", bg='lightblue',
-                              font=('Helvetic', 30, 'bold'))
+                              font=('MS Sans Serif', 30, 'bold'))
         home_label.grid(row=0, column=0, columnspan=4, pady=10)
         wel_msg = ("""Welcome to your language flashcard application"""
                    """\nwhere you can begin to learn French and Spanish!""")
         wel_label = tk.Label(self, text=wel_msg, bg='lightblue',
-                             font=('Helvetic', 10, 'bold'))
+                             font=('MS Sans Serif', 10, 'bold'))
         wel_label.grid(row=8, column=0, columnspan=4, padx=10, pady=20)
 
         # Button
-        spanish_btn = tk.Button(self, text="Spanish", font=('Helvetica', 15),
+        spanish_btn = tk.Button(self, text="Spanish", font=('MS Sans Serif', 15),
                                 bg="white", borderwidth=0,
                                 command=lambda: controller.show_frame(Spanish))
-        french_btn = tk.Button(self, text='French', font=('Helvetica', 15),
+        french_btn = tk.Button(self, text='French', font=('MS Sans Serif', 15),
                                bg="white", borderwidth=0,
                                command=lambda: controller.show_frame(French))
         french_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=20)
@@ -85,7 +85,6 @@ class French(tk.Frame):
         self.hinter = ''
         self.hint_count = 0
         self.answer_count = 0
-        self.progress_msg = ''
 
         self.entry = tk.Entry(self, font=('MS Sans Serif', 14))
         self.entry.grid(row=0, column=3, pady=20, columnspan=2)
@@ -99,17 +98,13 @@ class French(tk.Frame):
                                        bg='lightblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
                                      bg='lightblue')
-        self.progress_label = tk.Label(self, text=self.progress_msg,
-                                       font=('MS Sans Serif', 15),
-                                       bg='lightblue')
         self.hint_label = tk.Label(self, text="", bg='lightblue',
                                    font=('MS Sans Serif', 15))
 
-        self.progress_label.grid(row=4, column=2, columnspan=2)
         self.label.grid(row=0, column=2, pady=20)
         self.hint_label.grid(row=4, column=1, pady=10, columnspan=2)
         self.question_label.grid(row=2, column=2, columnspan=2, pady=20)
-        self.answer_label.grid(row=2, column=3, columnspan=2, pady=20)
+        self.answer_label.grid(row=2, column=3, rowspan=2, columnspan=2, pady=20)
 
         check_button = tk.Button(self, text="Check \n Answer", command=self.check)
         next_button = tk.Button(self, text="Next", command=self.next)
@@ -131,16 +126,8 @@ class French(tk.Frame):
         check_button.grid(row=5, column=2, padx=5, pady=20)
         skip_button.grid(row=8, column=4, padx=5, pady=10)
 
-    '''Shows users how many answers they have gotten correct so far'''
-    def progress(self):
-        while self.entry.get == self.entry.get().capitalize().strip():
-            self.answer_count += 1
-            self.progress_msg = (self.progress_msg +
-                                 f"You have got {self.answer_count} right so far!")
-            self.progress_label.config(text=self.progress_msg,
-                                       font=('MS Sans Serif', 10))
-
     '''Confirms whether user would like to skip flashcard'''
+
     def skip(self):
         self.entry.delete(0, 'end')
         self.next()
@@ -174,7 +161,7 @@ class French(tk.Frame):
                                        font=('MS Sans Serif', 22))
         return self.random_word
 
-    def check_input(self):
+    def check_no(self):
         word = self.entry.get()
         # Checks whether user entered an invalid answer with numbers
         for char in word:
@@ -190,21 +177,23 @@ class French(tk.Frame):
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
             if answer == self.words[self.random_word][1]:
+                # If translation is correct,answer count goes up and a positive message is shown
+                self.answer_count += 1
                 self.answer_label.config(
-                    text=f"""Correct! {self.words[self.random_word][0]} is
-                    {self.words[self.random_word][1]}""",
+                    text=f"""Good job! {self.words[self.random_word][0]} is 
+                    {self.words[self.random_word][1]}, \n You have got 
+                    {self.answer_count} answer(s) correct!""",
                     font=('MS Sans Serif', 10))
-                return True
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
                                 not {answer}""", font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
-                return False
         else:
             # If user does not enter input, messagebox prompts them to
             messagebox.showinfo('No input entered',
                                 'Please give an answer')
+        return self.answer_count
 
     def hint(self):
         if self.hint_count < len(self.words[self.random_word][1]):
