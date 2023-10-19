@@ -33,8 +33,8 @@ class FlashcardsApp(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
             self.show_frame(Home)
 
-    #  Show window for the given page name
     def show_frame(self, cont):
+        '''Show window for the given page name'''
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -125,8 +125,8 @@ class French(tk.Frame):
         check_button.grid(row=5, column=2, padx=5, pady=20)
         skip_button.grid(row=8, column=4, padx=5, pady=10)
 
-    '''Confirms whether user would like to skip flashcard'''
     def skip(self):
+        '''Confirms whether user would like to skip flashcard'''
         message_box = messagebox.askyesno('Remember there are hints!',
                                           (f'Are you sure you \n'
                                            'would like to move on?'))
@@ -146,6 +146,7 @@ class French(tk.Frame):
         return self.random_word
 
     def next(self):
+        '''Allows user to view next flashcard'''
         if len(self.entry.get()) == 0:
             self.skip()
         else:
@@ -161,8 +162,8 @@ class French(tk.Frame):
                                        font=('MS Sans Serif', 22))
             return self.random_word
 
-    '''Checks whether user entered an invalid answer with numbers'''
     def check_no(self):
+        '''Checks whether user entered an invalid answer with numbers'''
         word = self.entry.get()
         # Checks whether user entered an invalid answer with numbers
         for char in word:
@@ -170,8 +171,8 @@ class French(tk.Frame):
                 messagebox.showinfo('Numbers are not a valid answer',
                                     'Please enter a valid answer')
 
-    '''Checks user input and gives feedback accordingly'''
     def check_input(self):
+        '''Checks user input and gives feedback accordingly'''
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
             self.check_no()
@@ -179,13 +180,16 @@ class French(tk.Frame):
             if answer == self.words[self.random_word][1]:
                 self.answer_count += 1
                 pos_msg = f"""Good job! {self.words[self.random_word][0]} is 
-                        {self.words[self.random_word][1]}, \n You have got {self.answer_count} 
+                        {self.words[self.random_word][1]},
+                          \n You have got {self.answer_count} 
                         answer(s) correct!"""
-                self.answer_label.config(text=pos_msg, font=('MS Sans Serif', 10))
+                self.answer_label.config(text=pos_msg,
+                                         font=('MS Sans Serif', 10))
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
-                                        not {answer}""", font=('MS Sans Serif', 10))
+                                        not {answer}""", 
+                                        font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
         else:
             # If user does not enter input, messagebox prompts them to
@@ -194,6 +198,7 @@ class French(tk.Frame):
         return self.answer_count
 
     def hint(self):
+        '''Function displays hints to users letter by letter'''
         if self.hint_count < len(self.words[self.random_word][1]):
             self.hinter = self.hinter + self.words[self.random_word][1][self.hint_count]
             self.hint_label.config(text=f"Hint: {self.hinter}",
@@ -231,7 +236,8 @@ class Spanish(ttk.Frame):
                                          'translation here:',
                               font=('MS Sans Serif', 10, 'bold'),
                               bg='skyblue')
-        self.question_label = tk.Label(self, text=self.words[self.random_word][0],
+        self.question_label = tk.Label(self, 
+                                       text=self.words[self.random_word][0],
                                        font=('MS Sans Serif', 22),
                                        bg='skyblue')
         self.answer_label = tk.Label(self, text="", font=('MS Sans Serif', 15),
@@ -242,9 +248,11 @@ class Spanish(ttk.Frame):
         self.label.grid(row=0, column=2, pady=20)
         self.hint_label.grid(row=4, column=1, pady=10, columnspan=2)
         self.question_label.grid(row=2, column=2, columnspan=2, pady=20)
-        self.answer_label.grid(row=2, column=3, rowspan=2, columnspan=2, pady=20)
+        self.answer_label.grid(row=2, column=3, rowspan=2, 
+                               columnspan=2, pady=20)
 
-        check_button = tk.Button(self, text="Check \n Answer", command=self.check_input)
+        check_button = tk.Button(self, text="Check \n Answer", 
+                                 command=self.check_input)
         next_button = tk.Button(self, text="Next", command=self.next)
         hint_button = tk.Button(self, text="Hint", command=self.hint)
         home_button = tk.Button(self, text="Home",
@@ -264,8 +272,8 @@ class Spanish(ttk.Frame):
         check_button.grid(row=5, column=2, padx=5, pady=20)
         skip_button.grid(row=8, column=4, padx=5, pady=10)
 
-    '''Confirms whether user would like to skip flashcard'''
     def skip(self):
+        '''Confirms whether user would like to skip flashcard'''
         message_box = messagebox.askyesno('Remember there are hints!',
                                           (f'Are you sure you \n'
                                            'would like to move on?'))
@@ -285,6 +293,7 @@ class Spanish(ttk.Frame):
         return self.random_word
 
     def next(self):
+        '''Allows user to view next flashcard'''
         if len(self.entry.get()) == 0:
             self.skip()
         else:
@@ -301,8 +310,8 @@ class Spanish(ttk.Frame):
                                        font=('MS Sans Serif', 22))
         return self.random_word
 
-    '''Checks whether user entered an invalid answer with numbers'''
     def check_no(self):
+        '''Checks whether user entered an invalid answer with numbers'''
         word = self.entry.get()
         # Checks whether user entered an invalid answer with numbers
         for char in word:
@@ -310,8 +319,8 @@ class Spanish(ttk.Frame):
                 messagebox.showinfo('Numbers are not a valid answer',
                                     'Please enter a valid answer')
 
-    '''Checks user input and gives feedback accordingly'''
     def check_input(self):
+        '''Checks user input and gives feedback accordingly'''
         answer = self.entry.get().capitalize().strip()
         if len(answer) > 0:
             self.check_no()
@@ -319,13 +328,16 @@ class Spanish(ttk.Frame):
             if answer == self.words[self.random_word][1]:
                 self.answer_count += 1
                 pos_msg = f"""Good job! {self.words[self.random_word][0]} is 
-                        {self.words[self.random_word][1]}, \n You have got {self.answer_count} 
+                        {self.words[self.random_word][1]}, 
+                        \n You have got {self.answer_count} 
                         answer(s) correct!"""
-                self.answer_label.config(text=pos_msg, font=('MS Sans Serif', 10))
+                self.answer_label.config(text=pos_msg,
+                                          font=('MS Sans Serif', 10))
             else:
                 self.answer_label.config(
                     text=f"""Incorrect, {self.words[self.random_word][0]} is
-                                        not {answer}""", font=('MS Sans Serif', 10))
+                                        not {answer}""", 
+                                        font=('MS Sans Serif', 10))
                 self.entry.delete(0, 'end')
         else:
             # If user does not enter input, messagebox prompts them to
@@ -333,8 +345,8 @@ class Spanish(ttk.Frame):
                                 'Please give an answer')
         return self.answer_count
 
-    '''Function displays hints to users letter by letter'''
     def hint(self):
+        '''Function displays hints to users letter by letter'''
         if self.hint_count < len(self.words[self.random_word][1]):
             self.hinter = self.hinter + self.words[self.random_word][1][self.hint_count]
             self.hint_label.config(text=f"Hint: {self.hinter}",
